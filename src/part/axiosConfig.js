@@ -1,8 +1,7 @@
-// src/axiosConfig.js
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8025/api/', // Set the base URL
+  baseURL: `http://${process.env.REACT_APP_ENDHOST}:8025/api/`, // Use the updated environment variable
 });
 
 export default api;

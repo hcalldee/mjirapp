@@ -118,6 +118,7 @@ function TicketForm({ formData, onChange, onSubmit, onClose }) {
                   value={formData.Status}
                   onChange={onChange}
                 >
+                  <option value="">Pilih Status</option>
                   <option value="Ready">Ready</option>
                   <option value="WIP">WIP</option>
                   <option value="Testing">Testing</option>

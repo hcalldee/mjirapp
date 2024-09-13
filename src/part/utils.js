@@ -1,6 +1,6 @@
 import { Badge } from 'react-bootstrap'; // Import Badge
 import CustomBadge from './customBadge'; 
-import { format, differenceInDays } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 // Function to truncate ID
 export const truncateId = (id) => {
     if (id && id.length > 10) {
