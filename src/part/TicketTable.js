@@ -1,7 +1,8 @@
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import { Button } from 'react-bootstrap';
-import { truncateId, priorityBadge, statusBadge } from './utils'; // Import functions
+
+import { truncateId, priorityBadge, statusBadge, sisaHari, statusBadge2 } from './utils'; // Import functions
 
 const columns = (onViewDetail, onEdit, onDelete, handleOpenResource) => [
   {
@@ -17,16 +18,19 @@ const columns = (onViewDetail, onEdit, onDelete, handleOpenResource) => [
     style: { width: '25%' }, // Set width as a percentage
   },
   {
-    name: 'Unit',
-    selector: row => row.unit,
-    sortable: true,
-    style: { width: '10%' }, // Set width as a percentage
-  },
-  {
     name: 'Assigned To',
     selector: row => row.assigned,
     sortable: true,
     style: { width: '15%' }, // Set width as a percentage
+  },
+  {
+    name: 'Sisa Hari',
+    cell: row => {
+      const countSisaHari = sisaHari(row.end); // Calculate remaining days
+      return statusBadge2(countSisaHari); // Display badge based on remaining days
+    },
+    sortable: true,
+    style: { width: '10%' }, // Set width as a percentage
   },
   {
     name: 'Priority',

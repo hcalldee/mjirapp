@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import api from './axiosConfig'; // Import the custom axios instance
+import api from './part/axiosConfig'; // Import the custom axios instance
 import { Container, Button, Modal } from 'react-bootstrap';
-import TicketForm from './TicketForm';
-import TicketTable from './TicketTable';
-import TicketDetailModal from './TicketDetailModal'; // Import the new detail modal
+import TicketForm from './part/TicketForm';
+import TicketTable from './part/TicketTable';
+import TicketDetailModal from './part/TicketDetailModal'; // Import the new detail modal
 import { v4 as uuidv4 } from 'uuid'; // For generating UUID
 
 function App() {

@@ -1,5 +1,6 @@
 import { Badge } from 'react-bootstrap'; // Import Badge
 import CustomBadge from './customBadge'; 
+import { format, differenceInDays } from 'date-fns';
 // Function to truncate ID
 export const truncateId = (id) => {
     if (id && id.length > 10) {
@@ -51,4 +52,22 @@ export const truncateId = (id) => {
     }
   
     return <CustomBadge style={badgeStyle}>{status || 'Not Set'}</CustomBadge>;
+  };
+
+
+  export const sisaHari = (endDate)=>{
+    // Function to calculate the remaining days
+    const today = new Date();
+    const end = new Date(endDate);
+    return differenceInDays(end, today);
+
+  // Example statusBadge component to display the remaining days
+  }
+
+  // Example statusBadge component to display the remaining days
+  export const statusBadge2 = (sisaHari) => {
+    if (sisaHari < 0) {
+      return <Badge bg="danger">Expired</Badge>;
+    }
+    return <Badge bg="success">{sisaHari} days left</Badge>;
   };
