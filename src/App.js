@@ -94,6 +94,16 @@ function App() {
     }
   };
 
+  const handleAddActivity = async (id_ticket) => {
+    try {
+      // Make sure to include id_ticket in the request body
+      await api.post('/daily-log', { ticketId: id_ticket });
+      fetchTickets(); // Refresh the ticket list after adding activity
+    } catch (error) {
+      console.error('Error adding activity:', error);
+    }
+  };
+
   // Show modal for adding new ticket
   const handleAddNew = () => {
     setFormData({
@@ -134,6 +144,7 @@ function App() {
         onEdit={handleEdit} 
         onDelete={handleDelete}
         onViewDetail={handleViewDetail} // Pass function to view details
+        addActivity={handleAddActivity}
       />
 
       {/* Modal for adding/editing ticket */}

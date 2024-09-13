@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 
 import { truncateId, priorityBadge, statusBadge, sisaHari, statusBadge2 } from './utils'; // Import functions
 
-const columns = (onViewDetail, onEdit, onDelete, handleOpenResource) => [
+const columns = (onViewDetail, onEdit, onDelete, handleOpenResource,addActivity) => [
   {
     name: 'ID Ticket',
     selector: row => truncateId(row.id_ticket),
@@ -48,26 +48,35 @@ const columns = (onViewDetail, onEdit, onDelete, handleOpenResource) => [
     name: 'Action',
     cell:  row => (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-          <Button className="small-text-button" variant="info" onClick={() => onViewDetail(row)} size="sm" block>Detail</Button>
-          <Button 
-            className="small-text-button"
-            variant="success" 
-            onClick={() => handleOpenResource(row.Resource)} 
-            size="sm"
-            block
-            disabled={!row.Resource}
-          >
-            Resource
-          </Button>
-          <Button className="small-text-button" variant="warning" onClick={() => onEdit(row)} size="sm" block>Edit</Button>
-          <Button className="small-text-button" variant="danger" onClick={() => onDelete(row.id_ticket)} size="sm" block>Delete</Button>
+            <Button className="small-text-button" variant="info" onClick={() => onViewDetail(row)} size="sm" block>
+        Detail
+      </Button>
+      <Button 
+        className="small-text-button" 
+        variant="success" 
+        onClick={() => handleOpenResource(row.Resource)} 
+        size="sm" 
+        block
+        disabled={!row.Resource}
+      >
+        Resource
+      </Button>
+      <Button className="small-text-button" variant="warning" onClick={() => onEdit(row)} size="sm" block>
+        Edit
+      </Button>
+      <Button className="small-text-button" variant="danger" onClick={() => onDelete(row.id_ticket)} size="sm" block>
+        Delete
+      </Button>
+      <Button className="small-text-button" variant="primary" onClick={() => addActivity(row.id_ticket)} size="sm" block>
+          Add Activity
+      </Button>
         </div>
       ),
       style: { width: '15%' }, // Adjust width as needed
   }
 ];
 
-function TicketTable({ tickets, onEdit, onDelete, onViewDetail }) {
+function TicketTable({ tickets, onEdit, onDelete, onViewDetail,addActivity  }) {
   const handleOpenResource = (url) => {
     if (url) {
       window.open(url, '_blank');
@@ -77,7 +86,7 @@ function TicketTable({ tickets, onEdit, onDelete, onViewDetail }) {
   return (
     <div style={{ overflowX: 'auto' }}> {/* Ensure table container can scroll horizontally if needed */}
       <DataTable
-        columns={columns(onViewDetail, onEdit, onDelete, handleOpenResource)}
+        columns={columns(onViewDetail, onEdit, onDelete, handleOpenResource, addActivity )}
         data={tickets}
         pagination
         paginationPerPage={5}  // Set rows per page to 5
