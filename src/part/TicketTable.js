@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 
 import { truncateId, priorityBadge, statusBadge, sisaHari, statusBadge2 } from './utils'; // Import functions
 
-const columns = (onViewDetail, onEdit, onDelete, handleOpenResource,addActivity) => [
+const columns = (onViewDetail, onEdit, onDelete, handleOpenResource, addActivity, loadingActivity) => [
   {
     name: 'ID Ticket',
     selector: row => truncateId(row.id_ticket),
@@ -46,37 +46,44 @@ const columns = (onViewDetail, onEdit, onDelete, handleOpenResource,addActivity)
   },
   {
     name: 'Action',
-    cell:  row => (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-            <Button className="small-text-button" variant="info" onClick={() => onViewDetail(row)} size="sm" block>
-        Detail
-      </Button>
-      <Button 
-        className="small-text-button" 
-        variant="success" 
-        onClick={() => handleOpenResource(row.Resource)} 
-        size="sm" 
-        block
-        disabled={!row.Resource}
-      >
-        Resource
-      </Button>
-      <Button className="small-text-button" variant="warning" onClick={() => onEdit(row)} size="sm" block>
-        Edit
-      </Button>
-      <Button className="small-text-button" variant="danger" onClick={() => onDelete(row.id_ticket)} size="sm" block>
-        Delete
-      </Button>
-      <Button className="small-text-button" variant="primary" onClick={() => addActivity(row.id_ticket)} size="sm" block>
-          Add Activity
-      </Button>
-        </div>
-      ),
-      style: { width: '15%' }, // Adjust width as needed
+    cell: row => (
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+        <Button className="small-text-button" variant="info" onClick={() => onViewDetail(row)} size="sm" block>
+          Detail
+        </Button>
+        <Button 
+          className="small-text-button" 
+          variant="success" 
+          onClick={() => handleOpenResource(row.Resource)} 
+          size="sm" 
+          block
+          disabled={!row.Resource}
+        >
+          Resource
+        </Button>
+        <Button className="small-text-button" variant="warning" onClick={() => onEdit(row)} size="sm" block>
+          Edit
+        </Button>
+        <Button className="small-text-button" variant="danger" onClick={() => onDelete(row.id_ticket)} size="sm" block>
+          Delete
+        </Button>
+        <Button 
+          className="small-text-button" 
+          variant="primary" 
+          onClick={() => addActivity(row.id_ticket)} 
+          size="sm" 
+          block
+          disabled={loadingActivity} // Disable button during loading
+        >
+          {loadingActivity ? 'Adding...' : 'Add Activity'} {/* Show loading text */}
+        </Button>
+      </div>
+    ),
+    style: { width: '15%' }, // Adjust width as needed
   }
 ];
 
-function TicketTable({ tickets, onEdit, onDelete, onViewDetail,addActivity  }) {
+function TicketTable({ tickets, onEdit, onDelete, onViewDetail, addActivity, loadingActivity }) {
   const handleOpenResource = (url) => {
     if (url) {
       window.open(url, '_blank');
@@ -86,7 +93,7 @@ function TicketTable({ tickets, onEdit, onDelete, onViewDetail,addActivity  }) {
   return (
     <div style={{ overflowX: 'auto' }}> {/* Ensure table container can scroll horizontally if needed */}
       <DataTable
-        columns={columns(onViewDetail, onEdit, onDelete, handleOpenResource, addActivity )}
+        columns={columns(onViewDetail, onEdit, onDelete, handleOpenResource, addActivity, loadingActivity)}
         data={tickets}
         pagination
         paginationPerPage={5}  // Set rows per page to 5

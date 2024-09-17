@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import api from './part/axiosConfig'; // Import the custom axios instance
 import { Container, Button, Modal } from 'react-bootstrap';
 import TicketForm from './part/TicketForm';
@@ -10,6 +12,7 @@ function App() {
   const [tickets, setTickets] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false); // State for detail modal
+  const [loadingActivity, setLoadingActivity] = useState(false); // State for activity loading
   const [formData, setFormData] = useState({
     id_ticket: '', // hidden field with UUID
     nama_fitur: '',
@@ -95,14 +98,26 @@ function App() {
   };
 
   const handleAddActivity = async (id_ticket) => {
+    setLoadingActivity(true); // Start loading
     try {
-      // Make sure to include id_ticket in the request body
       await api.post('/daily-log', { ticketId: id_ticket });
       fetchTickets(); // Refresh the ticket list after adding activity
+      toast.success('Activity added successfully!', { position: "top-right" });
     } catch (error) {
-      console.error('Error adding activity:', error);
+      if (error.response) {
+        if (error.response.status === 400) {
+          toast.error('Invalid input for adding activity.', { position: "top-right" });
+        } else if (error.response.status === 500) {
+          toast.error('Server error, please try again later.', { position: "top-right" });
+        }
+      } else {
+        toast.error('An unexpected error occurred.', { position: "top-right" });
+      }
+    } finally {
+      setLoadingActivity(false); // Stop loading
     }
   };
+  
 
   // Show modal for adding new ticket
   const handleAddNew = () => {
@@ -136,9 +151,9 @@ function App() {
 
   return (
     <Container>
+
       <h1 className="my-4">Mini Jira App</h1>
       <Button onClick={handleAddNew} className="mb-3">Add New Ticket</Button>
-      
       <TicketTable 
         tickets={tickets} 
         onEdit={handleEdit} 
@@ -170,6 +185,7 @@ function App() {
           onClose={closeDetailModal}
         />
       )}
+      <ToastContainer />
     </Container>
   );
 }
